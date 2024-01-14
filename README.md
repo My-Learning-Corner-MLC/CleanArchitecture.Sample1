@@ -15,10 +15,13 @@ dotnet run
 
 To add a new migration from the root folder:
 
- `dotnet ef migrations add MigrationName --project src\Infrastructure --startup-project src\API --output-dir Database\Migrations`
+```bash
+dotnet ef migrations add MigrationName --project src\Infrastructure --startup-project src\API --output-dir Database\Migrations
+```
 
 To update database from the root folder:
-
- `dotnet ef database update --project src\Infrastructure --startup-project src\API`
+```bash
+dotnet ef database update --project src\Infrastructure --startup-project src\API
+```
 
 
