@@ -1,6 +1,7 @@
 ﻿using Sample1.Infrastructure.Database;
 using Microsoft.AspNetCore.Mvc;
 using ZymLabs.NSwag.FluentValidation;
+using Sample1.API.Infrastructure;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -11,6 +12,8 @@ public static class DependencyInjection
         services.AddDatabaseDeveloperPageExceptionFilter();
 
         services.AddHttpContextAccessor();
+
+        services.AddTransient<ExceptionHandlingMiddleware>();
 
         services.AddHealthChecks()
             .AddDbContextCheck<ApplicationDbContext>();

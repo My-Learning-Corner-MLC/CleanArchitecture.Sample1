@@ -5,9 +5,9 @@ namespace Sample1.API.Infrastructure;
 
 public static class WebApplicationExtensions
 {
-    public static RouteGroupBuilder MapGroup(this WebApplication app, EndpointGroupBase group)
+    public static RouteGroupBuilder MapGroup(this WebApplication app, EndpointGroupBase group, string? customGroupName = default)
     {
-        var groupName = group.GetType().Name;
+        var groupName = customGroupName ?? group.GetType().Name;
 
         return app
             .MapGroup($"/api/{groupName}")

@@ -24,11 +24,12 @@ if (app.Environment.IsDevelopment())
     await app.InitialiseDatabaseAsync();
 }
 
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
 app.UseHealthChecks("/health");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-// app.Map("/", () => Results.Redirect("/api"));
 app.MapEndpoints();
 
 app.Run();

@@ -1,22 +1,27 @@
-﻿using FluentValidation.Results;
+﻿using System.Net;
+using FluentValidation.Results;
 
 namespace Sample1.Application.Common.Exceptions;
 
-public class ValidationException : Exception
+public class ValidationException : CustomException
 {
-    public ValidationException()
-        : base("One or more validation failures have occurred.")
-    {
-        Errors = new Dictionary<string, string[]>();
-    }
+    public ValidationException() : base(
+        errorMessage: "One or more validation failures have occurred.",
+        statusCode: HttpStatusCode.BadRequest
+    )
+    { }
 
-    public ValidationException(IEnumerable<ValidationFailure> failures)
-        : this()
-    {
-        Errors = failures
-            .GroupBy(e => e.PropertyName, e => e.ErrorMessage)
-            .ToDictionary(failureGroup => failureGroup.Key, failureGroup => failureGroup.ToArray());
-    }
+    public ValidationException(string errorDescription) : base(
+        errorMessage: "One or more validation failures have occurred.",
+        errorDescription,
+        statusCode: HttpStatusCode.BadRequest
+    )
+    { }
 
-    public IDictionary<string, string[]> Errors { get; }
+    public ValidationException(IEnumerable<ValidationFailure> failures) : base(
+        errorMessage: "One or more validation failures have occurred.",
+        errorDescription: failures.Select(f => f.ErrorMessage).FirstOrDefault(),
+        statusCode: HttpStatusCode.BadRequest
+    )
+    { }
 }
