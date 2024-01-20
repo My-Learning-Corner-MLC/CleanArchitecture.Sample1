@@ -34,12 +34,12 @@ dotnet test --collect:"XPlat Code Coverage"
 
 To generate test report:
 
-### Step 1: run the following CLI
+Step 1: run the following CLI
 ```bash
 reportgenerator -reports:"TestResults\**\coverage.cobertura.xml" -targetdir:"coveragereport" -reporttypes:Html
 ```
 
-### Step 2: in the coveragereport folder, open file index.html
+Step 2: in the coveragereport folder, open file index.html
 
 
 
