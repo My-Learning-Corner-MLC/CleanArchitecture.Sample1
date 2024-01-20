@@ -5,6 +5,7 @@ using Sample1.Infrastructure.Database.Interceptors;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
+using Sample1.Infrastructure.Database.Repositories;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -26,7 +27,7 @@ public static class DependencyInjection
         });
 
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
-
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<ApplicationDbContextInitialiser>();
 
         return services;

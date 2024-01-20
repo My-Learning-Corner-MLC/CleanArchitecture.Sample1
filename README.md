@@ -25,3 +25,10 @@ dotnet ef database update --project src\Infrastructure --startup-project src\API
 ```
 
 
+# Technical references
+## 1. Clean architecture
+## 2. CQRS pattern
+## 3. Mediator pattern (MediatR)
+## 4. Unit of work & generic repository
+
+
