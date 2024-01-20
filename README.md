@@ -24,6 +24,25 @@ To update database from the root folder:
 dotnet ef database update --project src\Infrastructure --startup-project src\API
 ```
 
+## Unit Test
+
+To run all test cases:
+
+```bash
+dotnet test --collect:"XPlat Code Coverage"
+```
+
+To generate test report:
+
+### Step 1: run the following CLI
+```bash
+reportgenerator -reports:"TestResults\**\coverage.cobertura.xml" -targetdir:"coveragereport" -reporttypes:Html
+```
+
+### Step 2: in the coveragereport folder, open file index.html
+
+
+
 
 # Technical references
 ## 1. Clean architecture
