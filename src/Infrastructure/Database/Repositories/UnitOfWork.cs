@@ -5,7 +5,7 @@ using Sample1.Application.Common.Interfaces;
 
 namespace Sample1.Infrastructure.Database.Repositories;
 
-public class UnitOfWork : IUnitOfWork, IDisposable
+public class UnitOfWork : IUnitOfWork
 {
     private readonly ApplicationDbContext _context;
     private readonly ILogger<UnitOfWork> _logger;
@@ -37,24 +37,5 @@ public class UnitOfWork : IUnitOfWork, IDisposable
             
             throw new ConflictException(errorMessage: "Resource conflicted", errorDescription: concurrencyException.Message);
         }
-    }
-
-    // Implement dispose process
-    private bool _disposed;
-
-    protected virtual void Dispose(bool disposing)
-    {
-        if (!_disposed && disposing)
-        {
-            _context.Dispose();
-        }
-
-        _disposed = true;
-    }
-
-    public void Dispose()
-    {
-        Dispose(true);
-        GC.SuppressFinalize(this);
     }
 }
