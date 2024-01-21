@@ -64,7 +64,7 @@ public class ApplicationDbContextInitialiser
         // Seed, if necessary
         if (!_context.ProductItems.Any())
         {
-            var contentRootPath = @"C:\Users\vidieclc\Desktop\MyLearningCorner-MLC\CleanArchitecture.Sample1\src\Infrastructure\Database";
+            var contentRootPath = $@"{Directory.GetParent(Environment.CurrentDirectory)?.Parent?.FullName}\src\Infrastructure\Database";
             string sourcePath = Path.Combine(contentRootPath, "Setup", "Product.json");
             string sourceJson = File.ReadAllText(sourcePath);
             ProductSourceEntry[]? sourceItems = JsonSerializer.Deserialize<ProductSourceEntry[]>(sourceJson);
