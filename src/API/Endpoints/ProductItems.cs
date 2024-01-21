@@ -19,9 +19,9 @@ public class ProductItems : EndpointGroupBase
         app.MapGroup(this, "products")
             .MapGet(GetProductItemDetail, "/{id}")
             .MapPost(GetProductItemsWithPagination, "/query")     
+            .MapPost(CreateProductItem)
             .MapPut(UpdateProductItem, "/{id}")
-            .MapDelete(DeleteProductItem, "/{id}")
-            .MapPost(CreateProductItem);
+            .MapDelete(DeleteProductItem, "/{id}");
     }
 
     public async Task<Results<Ok<ProductItemDetailDto>, NotFound, BadRequest>> GetProductItemDetail(ISender sender, int id)

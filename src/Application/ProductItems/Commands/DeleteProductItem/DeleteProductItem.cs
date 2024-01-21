@@ -13,26 +13,25 @@ public record DeleteProductItemCommand : IRequest
 
 public class DeleteProductItemCommandHandler : IRequestHandler<DeleteProductItemCommand>
 {
-    private readonly IApplicationDbContext _context;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public DeleteProductItemCommandHandler(IApplicationDbContext context)
+    public DeleteProductItemCommandHandler(IUnitOfWork unitOfWork)
     {
-        _context = context;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task Handle(DeleteProductItemCommand request, CancellationToken cancellationToken)
     {
-        var productItem = await _context.ProductItems
-            .Where(p => p.Id == request.Id)
-            .FirstOrDefaultAsync(cancellationToken);
+        var productItem = await _unitOfWork.Products.GetById(request.Id, cancellationToken);
 
         if (productItem is null) throw new NotFoundException(
             errorMessage: ExceptionConst.ErrorMessage.RESOURCE_NOT_FOUND, 
             errorDescription: ExceptionConst.ErrorDescription.COULD_NOT_FOUND_ITEM_WITH_ID + request.Id
         );
 
-        _context.ProductItems.Remove(productItem);
+        _unitOfWork.Products.Update(productItem);
+        productItem.IsDeleted = true;
 
-        await _context.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.SaveChangeAsync(cancellationToken);
     }
 }

@@ -16,4 +16,12 @@ public class ProductRepository : GenericRepository<ProductItem>, IProductReposit
             cancellationToken: cancellationToken
         );
     }
+
+    public async Task<ProductItem?> GetByName(string productName, CancellationToken cancellationToken)
+    {
+        return await GetBy(
+            predicateExpression: p => p.Name == productName && p.IsDeleted == false,
+            cancellationToken: cancellationToken
+        );
+    }
 }
