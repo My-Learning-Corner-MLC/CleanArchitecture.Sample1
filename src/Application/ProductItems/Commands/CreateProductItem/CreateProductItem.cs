@@ -1,4 +1,6 @@
 using MediatR;
+using Sample1.Application.Common.Constants;
+using Sample1.Application.Common.Exceptions;
 using Sample1.Application.Common.Interfaces;
 using Sample1.Domain.Entities;
 
@@ -17,15 +19,21 @@ public record CreateProductItemCommand : IRequest<int>
 
 public class CreateProductItemCommandHandler : IRequestHandler<CreateProductItemCommand, int>
 {
-    private readonly IApplicationDbContext _context;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public CreateProductItemCommandHandler(IApplicationDbContext context)
+    public CreateProductItemCommandHandler(IUnitOfWork unitOfWork)
     {
-        _context = context;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<int> Handle(CreateProductItemCommand request, CancellationToken cancellationToken)
     {
+        var sameNameProduct = await _unitOfWork.Products.GetByName(request.Name ?? string.Empty, cancellationToken);
+        
+        if (sameNameProduct is not null) throw new ValidationException(
+            errorDescription: ValidationConst.ErrorMessage.PRODUCT_NAME_ALREADY_EXISTS
+        );
+        
         var entity = new ProductItem
         {
             Name = request.Name,
@@ -39,9 +47,9 @@ public class CreateProductItemCommandHandler : IRequestHandler<CreateProductItem
             LastModified = DateTime.Now
         };
 
-        _context.ProductItems.Add(entity);
+        _unitOfWork.Products.Add(entity);
 
-        await _context.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.SaveChangeAsync(cancellationToken);
 
         return entity.Id;
     }

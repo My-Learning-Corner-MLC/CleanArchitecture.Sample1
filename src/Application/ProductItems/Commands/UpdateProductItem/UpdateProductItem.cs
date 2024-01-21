@@ -20,31 +20,29 @@ public record UpdateProductItemCommand : IRequest<int>
 
 public class UpdateProductItemCommandHandler : IRequestHandler<UpdateProductItemCommand, int>
 {
-    private readonly IApplicationDbContext _context;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public UpdateProductItemCommandHandler(IApplicationDbContext context)
+    public UpdateProductItemCommandHandler(IUnitOfWork unitOfWork)
     {
-        _context = context;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<int> Handle(UpdateProductItemCommand request, CancellationToken cancellationToken)
     {
-        var productItem = await _context.ProductItems
-            .Where(p => p.Id == request.Id)
-            .FirstOrDefaultAsync(cancellationToken);
+        var productItem = await _unitOfWork.Products.GetById(request.Id, cancellationToken);
 
         if (productItem is null) throw new NotFoundException(
             errorMessage: ExceptionConst.ErrorMessage.RESOURCE_NOT_FOUND, 
             errorDescription: ExceptionConst.ErrorDescription.COULD_NOT_FOUND_ITEM_WITH_ID + request.Id
         );
 
-        var sameNameProduct = _context.ProductItems
-            .Where(p => p.Id != request.Id && p.Name == request.Name)
-            .Count();
+        var sameNameProduct = await _unitOfWork.Products.GetByName(request.Name ?? string.Empty, cancellationToken);
         
-        if (sameNameProduct > 0) throw new ValidationException(
+        if (sameNameProduct is not null && sameNameProduct.Id != request.Id) throw new ValidationException(
             errorDescription: ValidationConst.ErrorMessage.PRODUCT_NAME_ALREADY_EXISTS
         );
+
+        _unitOfWork.Products.Update(productItem);
 
         productItem.Name = request.Name;
         productItem.Description = request.Description;
@@ -55,7 +53,7 @@ public class UpdateProductItemCommandHandler : IRequestHandler<UpdateProductItem
         productItem.ProductBrandId = request.ProductBrandId;
         productItem.LastModified = DateTime.Now;
 
-        await _context.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.SaveChangeAsync(cancellationToken);
 
         return productItem.Id;
     }

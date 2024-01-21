@@ -127,9 +127,10 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
             .FirstOrDefaultAsync(predicateExpression, cancellationToken);
     }
 
-    public virtual Task<bool> Update(TEntity entity)
+    public virtual void Update(TEntity entity)
     {
-        throw new NotImplementedException();
+        _logger.LogInformation("Updating a {recordType} record", entity.GetType().Name);
+        _dbSet.Attach(entity);
     }
 
     private static int GetSkippingRecord(int page, int size)

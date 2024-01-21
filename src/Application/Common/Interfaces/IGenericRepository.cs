@@ -31,7 +31,7 @@ public interface IGenericRepository<TEntity> where TEntity : BaseAuditableEntity
 
     void DeleteRange(IEnumerable<TEntity> entities);
 
-    Task<bool> Update(TEntity entity);
+    void Update(TEntity entity);
 
     Task<int> CountAll(
         Expression<Func<TEntity, bool>>? filterExpression = default,
