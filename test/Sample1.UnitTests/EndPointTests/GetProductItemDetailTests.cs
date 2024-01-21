@@ -1,11 +1,9 @@
-using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Moq;
 using Sample1.API.Endpoints;
 using Sample1.Application.Common.Exceptions;
 using Sample1.Application.ProductItems.Queries.GetProductItemDetail;
-using Sample1.UnitTests.Utils;
 
 namespace Sample1.UnitTests.EndPointTests;
 
@@ -28,7 +26,9 @@ public class GetProductItemDetailTests
     {
         // Arrange
         var validProductId = 1;
-        var mockProductDetailDto = DataMockHelper.GetProductItemDetailDtoMock(validProductId);
+        var productItemFaker = DataMockHelper.GetProductItemMock(validProductId);
+        var mapper = AutoMapperHelper.GetMapperInstance();
+        var mockProductDetailDto = mapper.Map<ProductItemDetailDto>(productItemFaker);
         
         var mockSender = new Mock<ISender>();
         mockSender
