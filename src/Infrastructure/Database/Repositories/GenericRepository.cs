@@ -28,13 +28,16 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
         _dbSet.AddRange(entites);
     }
 
-    public virtual async Task<int> CountAll(Expression<Func<TEntity, bool>>? filter = null, CancellationToken cancellationToken = default)
+    public virtual async Task<int> CountAll(Expression<Func<TEntity, bool>>? filterExpression = null, bool includeDeleted = false, CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Counting all records");
+
         IQueryable<TEntity> queryable = _dbSet;
-        if (filter is not null)
+        if (!includeDeleted) queryable = queryable.Where(r => !r.IsDeleted);
+
+        if (filterExpression is not null)
         {
-            queryable = queryable.Where(filter);
+            queryable = queryable.Where(filterExpression);
         }
 
         return await queryable.CountAsync(cancellationToken);
@@ -62,54 +65,64 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
         Expression<Func<TEntity, bool>>? filterExpression = null, 
         int page = RepositoryConstant.DEFAULT_PAGE_NUMBER, 
         int size = RepositoryConstant.DEFAULT_SIZE_PER_PAGE, 
+        bool includeDeleted = false,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderByFunc = null, 
-        string? includes = null,
+        string? includeProperties = null,
         CancellationToken cancellationToken = default
     )
     {
         _logger.LogInformation("Getting all records with page {pageNumber} and size {sizeNumber}", page, size);
-        IQueryable<TEntity> query = _dbSet;
+
+        IQueryable<TEntity> queryable = _dbSet;
+        if (!includeDeleted) queryable = queryable.Where(r => !r.IsDeleted);
+
         if (filterExpression is not null)
         {
-            query = query.Where(filterExpression);
+            queryable = queryable.Where(filterExpression);
         }
 
         if (page is not 0 && size is not 0)
         {
             var skip = GetSkippingRecord(page, size);
-            query = query.Skip(skip).Take(size);
+            queryable = queryable.Skip(skip).Take(size);
         }
 
-        if (includes is not null)
+        if (includeProperties is not null)
         {
-            var includeProperties = includes.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (var property in includeProperties)
+            var properties = includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var property in properties)
             {
-                query = query.Include(property);
+                queryable = queryable.Include(property);
             }
         }
 
-        query = query.AsNoTracking();
+        queryable = queryable.AsNoTracking();
 
         return orderByFunc is not null 
-            ? await orderByFunc(query).ToListAsync(cancellationToken) 
-            : (IEnumerable<TEntity>)await query.ToListAsync(cancellationToken);
+            ? await orderByFunc(queryable).ToListAsync(cancellationToken) 
+            : (IEnumerable<TEntity>)await queryable.ToListAsync(cancellationToken);
     }
 
-    public virtual async Task<TEntity?> GetBy(Expression<Func<TEntity, bool>> predicateExpression, string? includes = null, CancellationToken cancellationToken = default)
+    public virtual async Task<TEntity?> GetBy(
+        Expression<Func<TEntity, bool>> predicateExpression, 
+        bool includeDeleted = false,
+        string? includeProperties = null, 
+        CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Getting record with predicate condition");
-        IQueryable<TEntity> query = _dbSet;
-        if (includes is not null)
+
+        IQueryable<TEntity> queryable = _dbSet;
+        if (!includeDeleted) queryable = queryable.Where(r => !r.IsDeleted);
+        if (includeProperties is not null)
         {
-            var includeProperties = includes.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (var property in includeProperties)
+            var properties = includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var property in properties)
             {
-                query = query.Include(property);
+                queryable = queryable.Include(property);
             }
         }
 
-        return await query
+        return await queryable
             .AsNoTracking()
             .FirstOrDefaultAsync(predicateExpression, cancellationToken);
     }

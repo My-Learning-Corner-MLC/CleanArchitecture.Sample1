@@ -14,7 +14,7 @@ public class ProductItems : EndpointGroupBase
     {
         app.MapGroup(this, "products")
             .MapGet(GetProductItemDetail, "/{id}")
-            .MapPost(GetProductItemsWithPagination);
+            .MapPost(GetProductItemsWithPagination, "/query");
     }
 
     public async Task<Results<Ok<ProductItemDetailDto>, NotFound, BadRequest>> GetProductItemDetail(ISender sender, int id)
