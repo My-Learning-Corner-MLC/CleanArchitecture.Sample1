@@ -1,11 +1,12 @@
 using System.Net;
+using Sample1.Application.Common.Constants;
 
 namespace Sample1.Application.Common.Exceptions;
 
 public class ConflictException : CustomException
 {
     public ConflictException() : base(
-        errorMessage: "Resource items conflicted", 
+        errorMessage: ExceptionConst.ErrorMessages.RESOURCE_CONFLICT, 
         statusCode: HttpStatusCode.Conflict
     ) 
     { }

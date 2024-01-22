@@ -9,11 +9,11 @@ namespace Sample1.Application.ProductItems.Commands.UpdateProductItem;
 public record UpdateProductItemCommand : IRequest<int>
 {
     public int Id {get; init;}
-    public string? Name { get; init; }
-    public string? Description { get; init; }
+    public string Name { get; init; } = string.Empty;
+    public string Description { get; init; } = string.Empty;
     public decimal Price { get; init; }
-    public string? PictureFileName { get; init; }
-    public string? PictureUri { get; init; }
+    public string PictureFileName { get; init; } = string.Empty;
+    public string PictureUri { get; init; } = string.Empty;
     public int ProductTypeId { get; init; }
     public int ProductBrandId { get; init; }
 }
@@ -30,16 +30,24 @@ public class UpdateProductItemCommandHandler : IRequestHandler<UpdateProductItem
     public async Task<int> Handle(UpdateProductItemCommand request, CancellationToken cancellationToken)
     {
         var productItem = await _unitOfWork.Products.GetById(request.Id, cancellationToken);
-
         if (productItem is null) throw new NotFoundException(
-            errorMessage: ExceptionConst.ErrorMessage.RESOURCE_NOT_FOUND, 
-            errorDescription: ExceptionConst.ErrorDescription.COULD_NOT_FOUND_ITEM_WITH_ID + request.Id
+            errorMessage: ExceptionConst.ErrorMessages.RESOURCE_NOT_FOUND, 
+            errorDescription: ExceptionConst.ErrorDescriptions.COULD_NOT_FOUND_ITEM_WITH_ID(request.Id)
         );
 
-        var sameNameProduct = await _unitOfWork.Products.GetByName(request.Name ?? string.Empty, cancellationToken);
-        
-        if (sameNameProduct is not null && sameNameProduct.Id != request.Id) throw new ValidationException(
-            errorDescription: ValidationConst.ErrorMessage.PRODUCT_NAME_ALREADY_EXISTS
+        var isExistsProductName = await _unitOfWork.Products.GetByName(request.Name, cancellationToken); 
+        if (isExistsProductName is not null && isExistsProductName.Id != request.Id) throw new ValidationException(
+            errorDescription: ProductConst.ErrorMessages.PRODUCT_NAME_ALREADY_EXISTS
+        );
+
+        var isExistsTypeId = await _unitOfWork.ProductTypes.GetById(request.ProductTypeId, cancellationToken);
+        if (isExistsTypeId is null) throw new ValidationException(
+            errorDescription: TypeConst.ErrorMessages.TYPE_ID_DOES_NOT_EXISTS
+        );
+
+        var isExistsBrandId = await _unitOfWork.ProductBrands.GetById(request.ProductBrandId, cancellationToken);
+        if (isExistsBrandId is null) throw new ValidationException(
+            errorDescription: BrandConst.ErrorMessages.BRAND_ID_DOES_NOT_EXISTS
         );
 
         _unitOfWork.Products.Update(productItem);

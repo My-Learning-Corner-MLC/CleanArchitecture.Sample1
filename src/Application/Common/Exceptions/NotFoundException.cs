@@ -1,11 +1,12 @@
 using System.Net;
+using Sample1.Application.Common.Constants;
 
 namespace Sample1.Application.Common.Exceptions;
 
 public class NotFoundException : CustomException
 {
     public NotFoundException() : base(
-        errorMessage: "Resource not found", 
+        errorMessage: ExceptionConst.ErrorMessages.RESOURCE_NOT_FOUND, 
         statusCode: HttpStatusCode.NotFound
     )
     { }
