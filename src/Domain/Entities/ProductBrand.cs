@@ -1,8 +1,8 @@
-﻿namespace Sample1.Domain.Entities;
+﻿using Sample1.Domain.Common;
 
-public class ProductBrand
+namespace Sample1.Domain.Entities;
+
+public class ProductBrand : BaseAuditableEntity
 {
-    public int Id { get; set; }
-
     public string Brand { get; set; }
 }

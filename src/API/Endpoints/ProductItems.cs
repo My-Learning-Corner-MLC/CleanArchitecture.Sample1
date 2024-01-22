@@ -26,7 +26,7 @@ public class ProductItems : EndpointGroupBase
 
     public async Task<Results<Ok<ProductItemDetailDto>, NotFound, BadRequest>> GetProductItemDetail(ISender sender, int id)
     {
-        if (id < 0) throw new ValidationException("Id at least greater than or equal to 0.");
+        if (id < 0) throw new ValidationException(ProductConst.ErrorMessages.PRODUCT_ID_AT_LEAST_GREATER_THAN_0);
 
         var item = await sender.Send(new GetProductItemDetailQuery { Id = id });
 
@@ -38,26 +38,27 @@ public class ProductItems : EndpointGroupBase
         return TypedResults.Ok(await sender.Send(query));
     }
     
-    public async Task<IResult> CreateProductItem(ISender sender, CreateProductItemCommand command)
+    public async Task<Results<Ok<int>, BadRequest>> CreateProductItem(ISender sender, CreateProductItemCommand command)
     {
-        return Results.Ok(await sender.Send(command));
+        return TypedResults.Ok(await sender.Send(command));
     }
 
-    public async Task<IResult> UpdateProductItem(ISender sender, int id, UpdateProductItemCommand command)
+    public async Task<Results<NoContent, BadRequest, NotFound>> UpdateProductItem(ISender sender, int id, UpdateProductItemCommand command)
     {
         if (id != command.Id) 
-            throw new ConflictException(
-                errorMessage: ExceptionConst.ErrorMessage.RESOURCE_CONFLICT,
-                errorDescription: ExceptionConst.ErrorDescription.ID_CONFLICT);
+            throw new ValidationException(
+                errorDescription: $"The product id - {id} in url and id - {command.Id} in command do not match");
         
         await sender.Send(command);
 
-        return Results.NoContent();
+        return TypedResults.NoContent();
     }
 
-    public async Task<IResult> DeleteProductItem(ISender sender, int id)
+    public async Task<Results<NoContent, NotFound, BadRequest>> DeleteProductItem(ISender sender, int id)
     {
+        if (id < 0) throw new ValidationException(ProductConst.ErrorMessages.PRODUCT_ID_AT_LEAST_GREATER_THAN_0);
+
         await sender.Send(new DeleteProductItemCommand() { Id = id });
-        return Results.NoContent();
+        return TypedResults.NoContent();
     }
 }
