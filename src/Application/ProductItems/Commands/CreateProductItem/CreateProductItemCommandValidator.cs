@@ -5,32 +5,27 @@ namespace Sample1.Application.ProductItems.Commands.CreateProductItem;
 
 public class CreateTodoItemCommandValidator : AbstractValidator<CreateProductItemCommand>
 {
-    private readonly int _nameMaxLength = ProductConst.Rules.NAME_MAX_LENTGH;
-    private readonly int _uriMaxLenght = ProductConst.Rules.URI_MAX_LENGTH;
-    private readonly decimal _maxPrice = ProductConst.Rules.MAX_PRICE;
-    private readonly decimal _minPrice = ProductConst.Rules.MIN_PRICE;
-
     public CreateTodoItemCommandValidator()
     {
         RuleFor(p => p.Name)
             .NotNull()
             .NotEmpty()
-            .MaximumLength(_nameMaxLength);
+            .MaximumLength(ProductConst.Rules.NAME_MAX_LENTGH);
 
         RuleFor(p => p.Price)
             .NotNull()
-            .GreaterThan(_minPrice)
+            .GreaterThan(ProductConst.Rules.MIN_PRICE)
                 .WithMessage(ProductConst.ErrorMessages.PRODUCT_PRICE_SHOULD_BE_GREATER_THAN(_minPrice))
-            .LessThan(_maxPrice)
+            .LessThan(ProductConst.Rules.MAX_PRICE)
                 .WithMessage(ProductConst.ErrorMessages.PRODUCT_PRICE_SHOULD_BE_LESS_THAN(_maxPrice));
 
         RuleFor(p => p.PictureFileName)
-            .MaximumLength(_nameMaxLength);
+            .MaximumLength(ProductConst.Rules.NAME_MAX_LENTGH);
 
         RuleFor(p => p.PictureUri)
             .NotNull()
             .NotEmpty()
-            .MaximumLength(_uriMaxLenght);
+            .MaximumLength(ProductConst.Rules.URI_MAX_LENGTH);
             
         RuleFor(p => p.ProductTypeId)
             .NotNull();
