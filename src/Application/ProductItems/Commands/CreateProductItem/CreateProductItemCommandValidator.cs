@@ -15,9 +15,9 @@ public class CreateTodoItemCommandValidator : AbstractValidator<CreateProductIte
         RuleFor(p => p.Price)
             .NotNull()
             .GreaterThan(ProductConst.Rules.MIN_PRICE)
-                .WithMessage(ProductConst.ErrorMessages.PRODUCT_PRICE_SHOULD_BE_GREATER_THAN(_minPrice))
+                .WithMessage(ProductConst.ErrorMessages.PRODUCT_PRICE_SHOULD_BE_GREATER_THAN(ProductConst.Rules.MIN_PRICE))
             .LessThan(ProductConst.Rules.MAX_PRICE)
-                .WithMessage(ProductConst.ErrorMessages.PRODUCT_PRICE_SHOULD_BE_LESS_THAN(_maxPrice));
+                .WithMessage(ProductConst.ErrorMessages.PRODUCT_PRICE_SHOULD_BE_LESS_THAN(ProductConst.Rules.MAX_PRICE));
 
         RuleFor(p => p.PictureFileName)
             .MaximumLength(ProductConst.Rules.NAME_MAX_LENTGH);
