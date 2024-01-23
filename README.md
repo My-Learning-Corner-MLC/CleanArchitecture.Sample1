@@ -45,5 +45,6 @@ reportgenerator -reports:"TestResults\**\coverage.cobertura.xml" -targetdir:"cov
 ## 2. CQRS pattern
 ## 3. Mediator pattern (MediatR)
 ## 4. Unit of work & generic repository
+## 5. Problem detail
 
 
