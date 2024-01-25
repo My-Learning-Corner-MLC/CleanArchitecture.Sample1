@@ -478,3 +478,4 @@ $RECYCLE.BIN/
 
 
 src/API/appsettings.**
+test/Sample1.UnitTests/coveragereport

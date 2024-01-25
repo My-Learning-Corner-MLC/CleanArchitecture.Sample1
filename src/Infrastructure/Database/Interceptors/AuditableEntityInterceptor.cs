@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Sample1.Infrastructure.Database.Interceptors;
 
-// TODO: inspect the class purpose later
 public class AuditableEntityInterceptor : SaveChangesInterceptor
 {
     public AuditableEntityInterceptor() {}

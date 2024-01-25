@@ -5,9 +5,11 @@ namespace Sample1.Application.Common.Interfaces;
 
 public interface IApplicationDbContext
 {
-    DbSet<TodoList> TodoLists { get; }
+    DbSet<ProductItem> ProductItems { get; }
 
-    DbSet<TodoItem> TodoItems { get; }
+    DbSet<ProductBrand> ProductBrands { get; }
+
+    DbSet<ProductType> ProductTypes { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }
