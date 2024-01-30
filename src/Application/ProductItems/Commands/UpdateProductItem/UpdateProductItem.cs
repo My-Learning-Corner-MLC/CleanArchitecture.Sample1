@@ -29,7 +29,7 @@ public class UpdateProductItemCommandHandler : IRequestHandler<UpdateProductItem
 
     public async Task<int> Handle(UpdateProductItemCommand request, CancellationToken cancellationToken)
     {
-        var productItem = await _unitOfWork.Products.GetById(request.Id, cancellationToken);
+        var productItem = await _unitOfWork.Products.GetById(request.Id, trackingChanges: true, cancellationToken);
         if (productItem is null) throw new NotFoundException(
             errorMessage: ExceptionConst.ErrorMessages.RESOURCE_NOT_FOUND, 
             errorDescription: ExceptionConst.ErrorDescriptions.COULD_NOT_FOUND_ITEM_WITH_ID(request.Id)
@@ -40,17 +40,15 @@ public class UpdateProductItemCommandHandler : IRequestHandler<UpdateProductItem
             errorDescription: ProductConst.ErrorMessages.PRODUCT_NAME_ALREADY_EXISTS
         );
 
-        var isExistsTypeId = await _unitOfWork.ProductTypes.GetById(request.ProductTypeId, cancellationToken);
-        if (isExistsTypeId is null) throw new ValidationException(
+        var isExistsType = await _unitOfWork.ProductTypes.GetById(request.ProductTypeId, cancellationToken);
+        if (isExistsType is null) throw new ValidationException(
             errorDescription: TypeConst.ErrorMessages.TYPE_ID_DOES_NOT_EXISTS
         );
 
-        var isExistsBrandId = await _unitOfWork.ProductBrands.GetById(request.ProductBrandId, cancellationToken);
-        if (isExistsBrandId is null) throw new ValidationException(
+        var isExistsBrand = await _unitOfWork.ProductBrands.GetById(request.ProductBrandId, cancellationToken: cancellationToken);
+        if (isExistsBrand is null) throw new ValidationException(
             errorDescription: BrandConst.ErrorMessages.BRAND_ID_DOES_NOT_EXISTS
         );
-
-        _unitOfWork.Products.Update(productItem);
 
         productItem.Name = request.Name;
         productItem.Description = request.Description;
@@ -59,7 +57,8 @@ public class UpdateProductItemCommandHandler : IRequestHandler<UpdateProductItem
         productItem.PictureUri = request.PictureUri;
         productItem.ProductTypeId = request.ProductTypeId;
         productItem.ProductBrandId = request.ProductBrandId;
-        productItem.LastModified = DateTime.Now;
+        
+        _unitOfWork.Products.Update(productItem);
 
         await _unitOfWork.SaveChangeAsync(cancellationToken);
 

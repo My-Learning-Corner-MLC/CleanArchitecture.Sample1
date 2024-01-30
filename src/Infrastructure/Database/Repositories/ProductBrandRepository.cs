@@ -9,10 +9,11 @@ public class ProductBrandRepository : GenericRepository<ProductBrand>, IProductB
     public ProductBrandRepository(ApplicationDbContext context, ILogger<UnitOfWork> logger)
         : base(context, logger) { }
 
-    public async Task<ProductBrand?> GetById(int brandId, CancellationToken cancellationToken)
+    public async Task<ProductBrand?> GetById(int brandId, bool trackingChanges = false, CancellationToken cancellationToken = default)
     {
         return await GetBy(
             predicateExpression: p => p.Id == brandId, 
+            trackingChanges: trackingChanges,
             cancellationToken: cancellationToken
         );
     }
