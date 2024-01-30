@@ -16,7 +16,7 @@ public class ProductItems : EndpointGroupBase
 {
     public override void Map(WebApplication app)
     {
-        app.MapGroup(this, "products")
+        app.MapGroup(this, groupName: "products", tagName: "PRODUCT APIs")
             .MapGet(GetProductItemDetail, "/{id}")
             .MapPost(GetProductItemsWithPagination, "/query")     
             .MapPost(CreateProductItem)
