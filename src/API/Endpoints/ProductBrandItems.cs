@@ -13,7 +13,7 @@ public class ProductBrandItems : EndpointGroupBase
 {
     public override void Map(WebApplication app)
     {
-        app.MapGroup(this, "brands")
+        app.MapGroup(this, groupName: "brands", tagName: "BRAND APIs")
             .MapPost(CreateProductBrandItem)
             .MapPut(UpdateProductBrandItem, "/{id}")
             .MapDelete(DeleteProductBrandItem, "/{id}");
