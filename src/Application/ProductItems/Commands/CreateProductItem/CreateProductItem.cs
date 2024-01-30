@@ -38,7 +38,7 @@ public class CreateProductItemCommandHandler : IRequestHandler<CreateProductItem
             errorDescription: TypeConst.ErrorMessages.TYPE_ID_DOES_NOT_EXISTS
         );
 
-        var isExistsBrandId = await _unitOfWork.ProductBrands.GetById(request.ProductBrandId, cancellationToken);
+        var isExistsBrandId = await _unitOfWork.ProductBrands.GetById(request.ProductBrandId, cancellationToken: cancellationToken);
         if (isExistsBrandId is null) throw new ValidationException(
             errorDescription: BrandConst.ErrorMessages.BRAND_ID_DOES_NOT_EXISTS
         );

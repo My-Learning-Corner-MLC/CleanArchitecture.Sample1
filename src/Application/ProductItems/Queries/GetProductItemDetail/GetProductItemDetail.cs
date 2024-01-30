@@ -20,7 +20,7 @@ public class GetProductItemDetailQueryHandler : IRequestHandler<GetProductItemDe
 
     public async Task<ProductItemDetailDto> Handle(GetProductItemDetailQuery request, CancellationToken cancellationToken)
     {
-        var productItem = await _unitOfWork.Products.GetById(request.Id, cancellationToken);
+        var productItem = await _unitOfWork.Products.GetById(request.Id, cancellationToken: cancellationToken);
 
         if (productItem is null) throw new NotFoundException(
             errorMessage: "Resource not found", 

@@ -25,11 +25,12 @@ public class GetProductItemsWithPaginationQueryHandler : IRequestHandler<GetProd
     public async Task<PaginatedList<ProductItemBriefDto>> Handle(GetProductItemsWithPaginationQuery request, CancellationToken cancellationToken)
     {
         var products = await _unitOfWork.Products
-            .GetAll(
-                page: request.PageNumber, 
-                size: request.PageSize, 
-                cancellationToken: cancellationToken
-            );
+            .GetAll(new()
+            {
+                Page = request.PageNumber,
+                Size = request.PageSize,
+                CancellationToken = cancellationToken  
+            });
 
         int? count = null;
         if (request.IncludeTotalCount)
