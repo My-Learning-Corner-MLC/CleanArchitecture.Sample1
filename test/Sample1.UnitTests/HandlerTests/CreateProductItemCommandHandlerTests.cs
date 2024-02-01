@@ -64,7 +64,7 @@ public class CreateProductItemCommandHandlerTests
             .ReturnsAsync(productTypeFaker);
 
         mockUnitOfWork
-            .Setup(uow => uow.ProductBrands.GetById(It.IsAny<int>(), It.IsAny<CancellationToken>()))
+            .Setup(uow => uow.ProductBrands.GetById(It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(default(ProductBrand));
 
         var commandHandler = new CreateProductItemCommandHandler(mockUnitOfWork.Object);

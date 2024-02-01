@@ -16,7 +16,7 @@ public class UpdateProductItemCommandHandlerTests
         
         var mockUnitOfWork = new Mock<IUnitOfWork>();
         mockUnitOfWork
-            .Setup(uow => uow.Products.GetById(It.IsAny<int>(), It.IsAny<CancellationToken>()))
+            .Setup(uow => uow.Products.GetById(It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(default(ProductItem));
 
         var commandHandler = new UpdateProductItemCommandHandler(mockUnitOfWork.Object);
@@ -34,7 +34,7 @@ public class UpdateProductItemCommandHandlerTests
         var productItemFaker = DataMockHelper.GetProductItemMock();
         var mockUnitOfWork = new Mock<IUnitOfWork>();
         mockUnitOfWork
-            .Setup(uow => uow.Products.GetById(It.IsAny<int>(), It.IsAny<CancellationToken>()))
+            .Setup(uow => uow.Products.GetById(It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(productItemFaker);
 
         var productItemWithSameNameFaker = DataMockHelper.GetProductItemMock(name: "Summit Pro Harness");
@@ -57,7 +57,7 @@ public class UpdateProductItemCommandHandlerTests
         var mockUnitOfWork = new Mock<IUnitOfWork>();
         var productItemFaker = DataMockHelper.GetProductItemMock();
         mockUnitOfWork
-            .Setup(uow => uow.Products.GetById(It.IsAny<int>(), It.IsAny<CancellationToken>()))
+            .Setup(uow => uow.Products.GetById(It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(productItemFaker);
 
         mockUnitOfWork
@@ -83,7 +83,7 @@ public class UpdateProductItemCommandHandlerTests
         var mockUnitOfWork = new Mock<IUnitOfWork>();
         var productItemFaker = DataMockHelper.GetProductItemMock();
         mockUnitOfWork
-            .Setup(uow => uow.Products.GetById(It.IsAny<int>(), It.IsAny<CancellationToken>()))
+            .Setup(uow => uow.Products.GetById(It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(productItemFaker);
 
         mockUnitOfWork
@@ -96,7 +96,7 @@ public class UpdateProductItemCommandHandlerTests
             .ReturnsAsync(productTypeFaker);
 
         mockUnitOfWork
-            .Setup(uow => uow.ProductBrands.GetById(It.IsAny<int>(), It.IsAny<CancellationToken>()))
+            .Setup(uow => uow.ProductBrands.GetById(It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(default(ProductBrand));
 
         var commandHandler = new UpdateProductItemCommandHandler(mockUnitOfWork.Object);
