@@ -4,7 +4,7 @@ using Sample1.Application.Common.Exceptions;
 using Sample1.Application.Common.Interfaces;
 using Sample1.Domain.Entities;
 
-namespace Sample1.Application.ProductItems.Commands.CreateProductItem;
+namespace Sample1.Application.ProductBrandItems.Commands.CreateProductBrandItem;
 
 public record CreateProductBrandItemCommand : IRequest<int>
 {

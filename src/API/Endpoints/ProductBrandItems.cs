@@ -2,10 +2,10 @@ using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Sample1.API.Infrastructure;
 using Sample1.Application.Common.Exceptions;
-using Sample1.Application.ProductItems.Commands.CreateProductItem;
-using Sample1.Application.ProductItems.Commands.UpdateProductItem;
-using Sample1.Application.ProductItems.Commands.DeleteProductItem;
 using Sample1.Application.Common.Constants;
+using Sample1.Application.ProductBrandItems.Commands.CreateProductBrandItem;
+using Sample1.Application.ProductBrandItems.Commands.UpdateProductBrandItem;
+using Sample1.Application.ProductBrandItems.Commands.DeleteProductBrandItem;
 
 namespace Sample1.API.Endpoints;
 

@@ -2,8 +2,9 @@ using MediatR;
 using Sample1.Application.Common.Constants;
 using Sample1.Application.Common.Exceptions;
 using Sample1.Application.Common.Interfaces;
+using Sample1.Domain.Events;
 
-namespace Sample1.Application.ProductItems.Commands.DeleteProductItem;
+namespace Sample1.Application.ProductBrandItems.Commands.DeleteProductBrandItem;
 
 public record DeleteProductIBrandItemCommand : IRequest
 {
@@ -27,6 +28,9 @@ public class DeleteProductIBrandItemCommandHandler : IRequestHandler<DeleteProdu
                 errorMessage: ExceptionConst.ErrorMessages.RESOURCE_NOT_FOUND, 
                 errorDescription: ExceptionConst.ErrorDescriptions.COULD_NOT_FOUND_ITEM_WITH_ID(request.Id)
             );
+
+        // Trigger to delete related records
+        brandItem.AddDomainEvent(new ProductBrandItemDeletedEvent(brandItem));
 
         _unitOfWork.ProductBrands.Delete(brandItem);
         
