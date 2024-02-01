@@ -14,7 +14,7 @@ public class GetProductItemDetailQueryHandlerTest
         // Arrange
         var mockUnitOfWork = new Mock<IUnitOfWork>();
         mockUnitOfWork
-            .Setup(uow => uow.Products.GetById(It.IsAny<int>(), It.IsAny<CancellationToken>()))
+            .Setup(uow => uow.Products.GetById(It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(default(ProductItem));
 
         var autoMapper = AutoMapperHelper.GetMapperInstance();
@@ -32,7 +32,7 @@ public class GetProductItemDetailQueryHandlerTest
         var productMock = DataMockHelper.GetProductItemMock();
         var mockUnitOfWork = new Mock<IUnitOfWork>();
         mockUnitOfWork
-            .Setup(uow => uow.Products.GetById(It.IsAny<int>(), It.IsAny<CancellationToken>()))
+            .Setup(uow => uow.Products.GetById(It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(productMock);
 
         var autoMapper = AutoMapperHelper.GetMapperInstance();
