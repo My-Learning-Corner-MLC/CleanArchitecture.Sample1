@@ -6,19 +6,19 @@ namespace Sample1.Application.Common.Models;
 
 public class GetAllParameters<TEntity> where TEntity : BaseAuditableEntity
 {
-    public Expression<Func<TEntity, bool>>? FilterExpression { get; set; }
+    public Expression<Func<TEntity, bool>>? FilterExpression { get; init; }
 
-    public int Page { get; set; } = RepositoryConstant.DEFAULT_PAGE_NUMBER;
+    public int Page { get; init; } = RepositoryConstant.DEFAULT_PAGE_NUMBER;
 
-    public int Size { get; set; } = RepositoryConstant.DEFAULT_SIZE_PER_PAGE;
+    public int Size { get; init; } = RepositoryConstant.DEFAULT_SIZE_PER_PAGE;
 
-    public bool IncludeDeleted { get; set; } = false;
+    public bool IncludeDeleted { get; init; } = false;
 
-    public Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? OrderByFunc { get; set; }
+    public Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? OrderByFunc { get; init; }
 
-    public string? IncludeProperties { get; set; }
+    public string? IncludeProperties { get; init; }
 
-    public bool TrackingChanges { get; set; } = false;
+    public bool TrackingChanges { get; init; } = false;
     
-    public CancellationToken CancellationToken { get; set; } = default;
+    public CancellationToken CancellationToken { get; init; } = default;
 }

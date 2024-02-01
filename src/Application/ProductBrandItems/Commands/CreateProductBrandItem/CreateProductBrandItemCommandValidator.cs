@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace Sample1.Application.ProductItems.Commands.CreateProductItem;
+namespace Sample1.Application.ProductBrandItems.Commands.CreateProductBrandItem;
 
 public class CreateProductBrandItemCommandValidator : AbstractValidator<CreateProductBrandItemCommand>
 {

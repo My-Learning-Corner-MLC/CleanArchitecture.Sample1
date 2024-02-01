@@ -3,7 +3,7 @@ using Sample1.Application.Common.Constants;
 using Sample1.Application.Common.Exceptions;
 using Sample1.Application.Common.Interfaces;
 
-namespace Sample1.Application.ProductItems.Commands.UpdateProductItem;
+namespace Sample1.Application.ProductBrandItems.Commands.UpdateProductBrandItem;
 
 public record UpdateProductBrandItemCommand : IRequest<int>
 {
