@@ -46,5 +46,6 @@ reportgenerator -reports:"TestResults\**\coverage.cobertura.xml" -targetdir:"cov
 ## 3. Mediator pattern (MediatR)
 ## 4. Unit of work & generic repository
 ## 5. Problem detail
+## 6. MassTransit
 
 
