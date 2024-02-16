@@ -47,6 +47,7 @@ In Clean Architecture, the Domain and Application layers are at the center of th
     - The Application layer contains business logic and types.
     
 Core should not depend on data access or other infrastructure concerns, all of those are inverted (by using interfaces and/or abstractions within Core and implemented by layers outside of Core)
+
 ![Clean Architecture Diagram](images/concept_of_clean_architecture.png)
 
 Some benefits with Clean Architecture:
@@ -59,10 +60,10 @@ With Clean Architecture, all dependencies should point inward. The Core layers d
 3. Testability
 By using dependency inversion, all your business logic can be test easily. You can quickly write unit tests by mocking those interfaces/abstractions.
 
-4. 𝗦𝗰𝗮𝗹𝗮𝗯𝗶𝗹𝗶𝘁𝘆 𝗮𝗻𝗱 𝗙𝗹𝗲𝘅𝗶𝗯𝗶𝗹𝗶𝘁𝘆
+4. Scalability and Flexibility
 Clean Architecture is modular, which mean allow you to swap out technologies for more scalable solutions.
 
-5. 𝗦𝗲𝗽𝗮𝗿𝗮𝘁𝗶𝗼𝗻 𝗼𝗳 𝗖𝗼𝗻𝗰𝗲𝗿𝗻𝘀
+5. Separation of Concerns 
 By decoupling different aspects of the application, you can focus on implementing on a specific parts.
 
 References: https://jasontaylor.dev/clean-architecture-getting-started/
@@ -86,17 +87,19 @@ The Generic Repository can be used for all entities, which mean all the standard
 Message broker is an important piece of microservices, which enables services and applications can communicate with each other using messages. 
 
 These are some basic concept of a message broker:
-- Producer: The service/application responsible for sending messages. In publish/subscribe pattern they are called publishers.
-- Consumer: The endpoint that consumes messages waiting in the message broker. In publish/subscribe pattern they are called subscribers.
-- Queue/topic: a folder in filesystem, where message broker uses them to store messages.
+- **Producer**: The service/application responsible for sending messages. In publish/subscribe pattern they are called publishers.
+- **Consumer**: The endpoint that consumes messages waiting in the message broker. In publish/subscribe pattern they are called subscribers.
+- **Queue/topic**: a folder in filesystem, where message broker uses them to store messages.
 
 There are two common distribution patterns:
-1. Point-to-point messaging
+**Point-to-point messaging**
 In this pattern, only one-to-one relation set between the sender and the receiver of the message. (Queue message broker)
+
 ![Message Broker Distribution: point-to-point messaging](images/message_broker_example_1.png)
 
-2. Publish/subscribe
+**Publish/subscribe**
 This pattern is slightly different from the previous one. For this publish/subscribe pattern, the sender of the message does not know anything about the receivers. It's mean that the message is being sent to the topic, it will distribute to all subcribers's endpoints of the topic.
+
 ![Message Broker Distribution: publish/subscribe messaging](images/message_broker_example_2.png)
 
 Advantages of message broker:
