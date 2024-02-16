@@ -92,22 +92,23 @@ These are some basic concept of a message broker:
 - **Queue/topic**: a folder in filesystem, where message broker uses them to store messages.
 
 There are two common distribution patterns:
-**Point-to-point messaging**
+
+**Point-to-point messaging:**
 In this pattern, only one-to-one relation set between the sender and the receiver of the message. (Queue message broker)
 
 ![Message Broker Distribution: point-to-point messaging](images/message_broker_example_1.png)
 
-**Publish/subscribe**
+**Publish/subscribe:**
 This pattern is slightly different from the previous one. For this publish/subscribe pattern, the sender of the message does not know anything about the receivers. It's mean that the message is being sent to the topic, it will distribute to all subcribers's endpoints of the topic.
 
 ![Message Broker Distribution: publish/subscribe messaging](images/message_broker_example_2.png)
 
-Advantages of message broker:
+**Advantages of message broker:**
 1. Provided communication between services that may not be running at the same time: The producer can send messages regardless of whether the consumer is active or not. All it needs is a running message broker. The same applies to the consumer.
 2. Improved system performance by introducing asynchronous processing: High-consuming tasks can be distributed to separate processes. That will fasten up your application and increase user experience.
 3. Increased reliability by guaranteeing the transmission of messages: Message brokers offer a redelivering mechanism. In case of consumer failure, it can redeliver the message immediately or after some specified time. It also supports routing of not delivered messages – it’s called a dead-letter mechanism.
 
-Disadvantages of message broker:
+**Disadvantages of message broker:**
 1. Increased system complexity
 2. Debugging can be harder
 
